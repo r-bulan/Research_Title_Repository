@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('photo')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes(); // Soft delete column
         });
     }
 

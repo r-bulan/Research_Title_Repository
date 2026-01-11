@@ -12,6 +12,8 @@ class ResearchTitle extends Model
 
     protected $fillable = ['title', 'author_name', 'email', 'category_id', 'photo'];
 
+    protected $dates = ['deleted_at'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

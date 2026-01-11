@@ -1,6 +1,6 @@
 <x-app-layout title="Trash">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Trashed Research Titles</h1>
+        <h1 class="text-2xl font-bold text-gray-900">🗑️ Trashed Research Titles</h1>
         <a href="{{ route('research_titles.index') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
             ← Back to Research Titles
         </a>
@@ -45,16 +45,16 @@
 
             <!-- Active Filters Display -->
             @if (request('search') || request('category_id'))
-                <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p class="text-sm text-red-800">
+                <div class="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                    <p class="text-sm text-orange-800">
                         <strong>Active Filters:</strong>
                         @if (request('search'))
-                            <span class="inline-block ml-2 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs">
+                            <span class="inline-block ml-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">
                                 Search: "{{ request('search') }}" <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['search' => null])) }}" class="ml-1 font-bold">✕</a>
                             </span>
                         @endif
                         @if (request('category_id'))
-                            <span class="inline-block ml-2 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs">
+                            <span class="inline-block ml-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">
                                 Category: "{{ $categories->find(request('category_id'))->name ?? 'Unknown' }}" <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['category_id' => null])) }}" class="ml-1 font-bold">✕</a>
                             </span>
                         @endif
@@ -72,7 +72,7 @@
                     <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Author</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Title</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Category</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Deleted</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Deleted On</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
             </thead>
@@ -82,9 +82,9 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 @if ($title->photo)
-                                    <img src="{{ $title->photo_url }}" alt="{{ $title->author_name }}" class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 opacity-75">
+                                    <img src="{{ $title->photo_url }}" alt="{{ $title->author_name }}" class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 opacity-60">
                                 @else
-                                    <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold shadow-md opacity-75">
+                                    <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold shadow-md opacity-60">
                                         {{ $title->initials }}
                                     </div>
                                 @endif
@@ -97,16 +97,21 @@
                                 {{ $title->category->name }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-gray-600 text-sm">{{ $title->deleted_at->format('M d, Y') }}</td>
+                        <td class="px-6 py-4 text-gray-600 text-sm">
+                            <div>
+                                <div>{{ $title->deleted_at->format('M d, Y') }}</div>
+                                <div class="text-xs text-gray-500">{{ $title->deleted_at->diffForHumans() }}</div>
+                            </div>
+                        </td>
                         <td class="px-6 py-4 space-x-2">
                             <form method="POST" action="{{ route('research_titles.restore', $title->id) }}" style="display:inline;">
                                 @csrf
                                 <button 
                                     type="button" 
                                     onclick="confirmRestore(this)" 
-                                    class="text-green-600 hover:text-green-800 text-sm font-medium"
+                                    class="text-green-600 hover:text-green-800 text-sm font-medium hover:underline"
                                 >
-                                    Restore
+                                    ♻️ Restore
                                 </button>
                             </form>
                             <form method="DELETE" action="{{ route('research_titles.forceDelete', $title->id) }}" style="display:inline;">
@@ -114,9 +119,9 @@
                                 <button 
                                     type="button" 
                                     onclick="confirmForceDelete(this.form)" 
-                                    class="text-red-600 hover:text-red-800 text-sm font-medium"
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium hover:underline"
                                 >
-                                    Delete Permanently
+                                    🔥 Delete Permanently
                                 </button>
                             </form>
                         </td>
@@ -125,9 +130,10 @@
                     <tr>
                         <td colspan="5" class="px-6 py-8 text-center text-gray-500">
                             <div class="flex flex-col items-center gap-2">
-                                <span class="text-3xl">✅</span>
-                                <span>No trashed research titles.</span>
-                                <a href="{{ route('research_titles.index') }}" class="text-blue-600 hover:underline font-medium text-sm mt-2">Go to active titles</a>
+                                <span class="text-5xl">✅</span>
+                                <span class="text-lg font-medium">No trashed research titles</span>
+                                <p class="text-sm">Your trash is clean!</p>
+                                <a href="{{ route('research_titles.index') }}" class="text-blue-600 hover:underline font-medium text-sm mt-4">Go to active titles</a>
                             </div>
                         </td>
                     </tr>
@@ -137,9 +143,11 @@
     </div>
 
     <!-- Results Summary -->
-    <div class="mt-4 text-sm text-gray-600">
-        <p>Showing <strong>{{ $researchTitles->count() }}</strong> of <strong>{{ $researchTitles->total() }}</strong> trashed titles</p>
-    </div>
+    @if ($researchTitles->total() > 0)
+        <div class="mt-4 text-sm text-gray-600">
+            <p>Showing <strong>{{ $researchTitles->count() }}</strong> of <strong>{{ $researchTitles->total() }}</strong> trashed titles</p>
+        </div>
+    @endif
 
     <!-- Pagination -->
     @if ($researchTitles->hasPages())

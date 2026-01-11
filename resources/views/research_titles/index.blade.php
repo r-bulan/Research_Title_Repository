@@ -1,9 +1,14 @@
 <x-app-layout title="Research Titles">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-900">CCS Research Titles</h1>
-        <a href="{{ route('research_titles.create') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
-            + Add Research Title
-        </a>
+        <div class="space-x-2">
+            <a href="{{ route('research_titles.create') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium inline-block">
+                + Add Research Title
+            </a>
+            <a href="{{ route('research_titles.export', request()->query()) }}" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium inline-block">
+                📄 Export to PDF
+            </a>
+        </div>
     </div>
 
     <!-- Search and Filter -->

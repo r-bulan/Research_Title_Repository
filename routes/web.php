@@ -15,7 +15,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Categories
     Route::resource('categories', CategoryController::class);
     
-    // Research Titles
+    // Research Titles - Export route MUST come before resource route
+    Route::get('/research_titles/export', [ResearchTitleController::class, 'export'])->name('research_titles.export');
     Route::resource('research_titles', ResearchTitleController::class);
     
     // Trash
