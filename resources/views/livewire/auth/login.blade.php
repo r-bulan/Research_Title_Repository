@@ -1,59 +1,160 @@
-<x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ __('Login') }} - CCS Research Title Repository</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+</head>
+<body class="font-figtree antialiased bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md px-4">
+        <!-- Logo & Header -->
+        <div class="text-center mb-8">
+            <div class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg mb-4">
+                <h1 class="text-2xl font-bold">CCS Repository</h1>
+            </div>
+            <p class="text-gray-600 text-sm">College of Computer Studies</p>
+        </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
-            @csrf
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
-                    type="password"
-                    required
-                    autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
-                />
-
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
+        <!-- Login Card -->
+        <div class="bg-white rounded-lg shadow-lg border border-gray-100 p-8">
+            <!-- Title -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900">{{ __('Welcome Back') }}</h2>
+                <p class="text-gray-600 text-sm mt-2">{{ __('Enter your credentials to access the repository') }}</p>
             </div>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+            <!-- Session Status -->
+            @if (session('status'))
+                <div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
+                    ✓ {{ session('status') }}
+                </div>
+            @endif
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
-        </form>
+            <!-- Login Form -->
+            <form method="POST" action="{{ route('login.store') }}" class="space-y-6">
+                @csrf
 
-        @if (Route::has('register'))
-            <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-                <span>{{ __('Don\'t have an account?') }}</span>
-                <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
-            </div>
-        @endif
+                <!-- Email Address -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ __('Email Address') }}
+                    </label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value="{{ old('email') }}"
+                        required
+                        autofocus
+                        autocomplete="email"
+                        placeholder="email@example.com"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm @error('email') border-red-500 @enderror"
+                    />
+                    @error('email')
+                        <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="password" class="block text-sm font-medium text-gray-700">
+                            {{ __('Password') }}
+                        </label>
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="text-blue-600 hover:text-blue-700 text-xs font-medium">
+                                {{ __('Forgot password?') }}
+                            </a>
+                        @endif
+                    </div>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="••••••••"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm @error('password') border-red-500 @enderror"
+                    />
+                    @error('password')
+                        <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <input
+                        id="remember"
+                        name="remember"
+                        type="checkbox"
+                        {{ old('remember') ? 'checked' : '' }}
+                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    />
+                    <label for="remember" class="ml-2 text-sm text-gray-600 cursor-pointer">
+                        {{ __('Remember me') }}
+                    </label>
+                </div>
+
+                <!-- Login Button -->
+                <button
+                    type="submit"
+                    class="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition text-sm"
+                >
+                    {{ __('Log In') }}
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="my-6 border-t border-gray-200"></div>
+
+            <!-- Sign Up Link -->
+            @if (Route::has('register'))
+                <div class="text-center">
+                    <p class="text-gray-600 text-sm">
+                        {{ __('Don\'t have an account?') }}
+                        <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-700 font-medium">
+                            {{ __('Sign up here') }}
+                        </a>
+                    </p>
+                </div>
+            @endif
+        </div>
+
+        <!-- Footer Info -->
+        <div class="text-center mt-8">
+            <p class="text-gray-500 text-xs">
+                {{ __('CCS Research Title Repository') }} © {{ date('Y') }}
+            </p>
+        </div>
     </div>
-</x-layouts.auth>
+
+    <!-- Loading State -->
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #d1d5db;
+        }
+    </style>
+</body>
+</html>

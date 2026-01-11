@@ -50,12 +50,14 @@
                         <strong>Active Filters:</strong>
                         @if (request('search'))
                             <span class="inline-block ml-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">
-                                Search: "{{ request('search') }}" <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['search' => null])) }}" class="ml-1 font-bold">✕</a>
+                                Search: "{{ request('search') }}" 
+                                <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['search' => null])) }}" class="ml-1 font-bold">✕</a>
                             </span>
                         @endif
                         @if (request('category_id'))
                             <span class="inline-block ml-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">
-                                Category: "{{ $categories->find(request('category_id'))->name ?? 'Unknown' }}" <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['category_id' => null])) }}" class="ml-1 font-bold">✕</a>
+                                Category: "{{ $categories->find(request('category_id'))->name ?? 'Unknown' }}" 
+                                <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['category_id' => null])) }}" class="ml-1 font-bold">✕</a>
                             </span>
                         @endif
                     </p>
@@ -104,8 +106,10 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 space-x-2">
-                            <form method="POST" action="{{ route('research_titles.restore', $title->id) }}" style="display:inline;">
+                            <!-- Restore Form -->
+                            <form method="POST" action="{{ route('research_titles.restore', $title->id) }}" class="inline">
                                 @csrf
+                                @method('PATCH')
                                 <button 
                                     type="button" 
                                     onclick="confirmRestore(this)" 
@@ -114,16 +118,19 @@
                                     ♻️ Restore
                                 </button>
                             </form>
-                            <form method="DELETE" action="{{ route('research_titles.forceDelete', $title->id) }}" style="display:inline;">
-                                @csrf
-                                <button 
-                                    type="button" 
-                                    onclick="confirmForceDelete(this.form)" 
-                                    class="text-red-600 hover:text-red-800 text-sm font-medium hover:underline"
-                                >
-                                    🔥 Delete Permanently
-                                </button>
-                            </form>
+
+                            <!-- Force Delete Form -->
+                            <form method="POST" action="{{ route('research_titles.forceDelete', $title->id) }}" class="inline">
+    @csrf
+    @method('DELETE') <!-- THIS is crucial -->
+    <button 
+        type="button" 
+        onclick="confirmForceDelete(this.form)" 
+        class="text-red-600 hover:text-red-800 text-sm font-medium hover:underline"
+    >
+        🔥 Delete Permanently
+    </button>
+</form>
                         </td>
                     </tr>
                 @empty

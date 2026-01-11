@@ -54,7 +54,7 @@ class ResearchTitleController extends Controller
 
         ResearchTitle::create($data);
 
-        return redirect()->route('research_titles.index')->with('success', '✓ Research title created successfully!');
+        return redirect()->route('research_titles.index')->with('success', 'Research title created successfully!');
     }
 
     public function show(ResearchTitle $researchTitle)
@@ -81,13 +81,13 @@ class ResearchTitleController extends Controller
 
         $researchTitle->update($data);
 
-        return redirect()->route('research_titles.index')->with('success', '✓ Research title updated successfully!');
+        return redirect()->route('research_titles.index')->with('success', 'Research title updated successfully!');
     }
 
     public function destroy(ResearchTitle $researchTitle)
     {
         $researchTitle->delete();
-        return redirect()->route('research_titles.index')->with('success', '✓ Research title moved to trash.');
+        return redirect()->route('research_titles.index')->with('success', 'Research title moved to trash.');
     }
 
     public function trash(Request $request)
@@ -120,7 +120,7 @@ class ResearchTitleController extends Controller
         $researchTitle = ResearchTitle::withTrashed()->findOrFail($id);
         $researchTitle->restore();
 
-        return redirect()->route('research_titles.trash')->with('success', '♻️ Research title restored successfully!');
+        return redirect()->route('research_titles.trash')->with('success', 'Research title restored successfully!');
     }
 
     public function forceDelete($id)
@@ -133,7 +133,7 @@ class ResearchTitleController extends Controller
         
         $researchTitle->forceDelete();
 
-        return redirect()->route('research_titles.trash')->with('success', '🔥 Research title permanently deleted.');
+        return redirect()->route('research_titles.trash')->with('success', 'Research title permanently deleted.');
     }
 
     public function export(Request $request)
