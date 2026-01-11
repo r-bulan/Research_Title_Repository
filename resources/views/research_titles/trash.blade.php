@@ -1,4 +1,4 @@
-<x-app-layout :title="'Trash'">
+<x-app-layout title="Trash">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-900">Trashed Research Titles</h1>
         <a href="{{ route('research_titles.index') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
@@ -9,7 +9,7 @@
     <!-- Search and Filter -->
     <div class="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 mb-6">
         <form method="GET" action="{{ route('research_titles.trash') }}" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
                     <input 
@@ -17,12 +17,12 @@
                         name="search" 
                         value="{{ request('search') }}" 
                         placeholder="Title, author, or email"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select name="category_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <select name="category_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="">All Categories</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -33,13 +33,34 @@
                 </div>
                 <div class="flex items-end gap-2">
                     <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
-                        Search
+                        🔍 Search
                     </button>
-                    <a href="{{ route('research_titles.trash') }}" class="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-center font-medium">
-                        Clear
+                </div>
+                <div class="flex items-end">
+                    <a href="{{ route('research_titles.trash') }}" class="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-center font-medium">
+                        ✕ Clear Filters
                     </a>
                 </div>
             </div>
+
+            <!-- Active Filters Display -->
+            @if (request('search') || request('category_id'))
+                <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-sm text-red-800">
+                        <strong>Active Filters:</strong>
+                        @if (request('search'))
+                            <span class="inline-block ml-2 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs">
+                                Search: "{{ request('search') }}" <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['search' => null])) }}" class="ml-1 font-bold">✕</a>
+                            </span>
+                        @endif
+                        @if (request('category_id'))
+                            <span class="inline-block ml-2 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs">
+                                Category: "{{ $categories->find(request('category_id'))->name ?? 'Unknown' }}" <a href="{{ route('research_titles.trash', array_merge(request()->query(), ['category_id' => null])) }}" class="ml-1 font-bold">✕</a>
+                            </span>
+                        @endif
+                    </p>
+                </div>
+            @endif
         </form>
     </div>
 
@@ -61,18 +82,18 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 @if ($title->photo)
-                                    <img src="{{ $title->photo_url }}" alt="{{ $title->author_name }}" class="w-10 h-10 rounded-full object-cover">
+                                    <img src="{{ $title->photo_url }}" alt="{{ $title->author_name }}" class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 opacity-75">
                                 @else
-                                    <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold">
+                                    <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold shadow-md opacity-75">
                                         {{ $title->initials }}
                                     </div>
                                 @endif
                                 <span class="text-gray-900 font-medium">{{ $title->author_name }}</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-gray-900">{{ Str::limit($title->title, 40) }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ Str::limit($title->title, 50) }}</td>
                         <td class="px-6 py-4">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">
+                            <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">
                                 {{ $title->category->name }}
                             </span>
                         </td>
@@ -103,12 +124,21 @@
                 @empty
                     <tr>
                         <td colspan="5" class="px-6 py-8 text-center text-gray-500">
-                            No trashed research titles. <a href="{{ route('research_titles.index') }}" class="text-blue-600 hover:underline font-medium">Go to active titles</a>
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-3xl">✅</span>
+                                <span>No trashed research titles.</span>
+                                <a href="{{ route('research_titles.index') }}" class="text-blue-600 hover:underline font-medium text-sm mt-2">Go to active titles</a>
+                            </div>
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <!-- Results Summary -->
+    <div class="mt-4 text-sm text-gray-600">
+        <p>Showing <strong>{{ $researchTitles->count() }}</strong> of <strong>{{ $researchTitles->total() }}</strong> trashed titles</p>
     </div>
 
     <!-- Pagination -->
