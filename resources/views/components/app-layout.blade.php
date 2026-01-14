@@ -21,7 +21,7 @@
     <!-- Sidebar -->
     <aside id="sidebar" class="w-64 bg-white border-r border-gray-200 shadow-sm fixed h-screen overflow-y-auto z-20 -translate-x-full lg:translate-x-0 transition-transform">
         <div class="p-6 border-b border-gray-200">
-            <h1 class="text-xl font-bold text-gray-900">CCS Repository</h1>
+            <h1 class="text-xl font-bold text-gray-900">Title Repository</h1>
             <p class="text-xs text-gray-500 mt-1">Research Management</p>
         </div>
 

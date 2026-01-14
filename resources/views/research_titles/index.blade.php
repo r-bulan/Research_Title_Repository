@@ -1,12 +1,12 @@
 <x-app-layout title="Research Titles">
     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-        <h1 class="text-2xl lg:text-3xl font-bold text-gray-900">CCS Research Titles</h1>
+        <h1 class="text-2xl lg:text-3xl font-bold text-gray-900">Research Titles</h1>
         <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
             <a href="{{ route('research_titles.create') }}" class="px-4 lg:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium inline-block text-center text-sm lg:text-base">
-                + Add Research Title
+                 Add Research Title
             </a>
             <a href="{{ route('research_titles.export', request()->query()) }}" class="px-4 lg:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium inline-block text-center text-sm lg:text-base">
-                📄 Export PDF
+                Export PDF
             </a>
         </div>
     </div>
@@ -38,12 +38,12 @@
                 </div>
                 <div class="flex items-end gap-2">
                     <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
-                        🔍 Search
+                        Search
                     </button>
                 </div>
                 <div class="flex items-end">
                     <a href="{{ route('research_titles.index') }}" class="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-center font-medium text-sm">
-                        ✕ Clear
+                        Clear
                     </a>
                 </div>
             </div>
@@ -146,11 +146,6 @@
                 @endforelse
             </tbody>
         </table>
-    </div>
-
-    <!-- Results Summary -->
-    <div class="mt-4 text-xs lg:text-sm text-gray-600">
-        <p>Showing <strong>{{ $researchTitles->count() }}</strong> of <strong>{{ $researchTitles->total() }}</strong> research titles</p>
     </div>
 
     <!-- Pagination -->

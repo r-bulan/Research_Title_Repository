@@ -253,12 +253,14 @@ function confirmDelete(form) {
 
 /**
  * Confirm before restoring an item
- * @param {HTMLElement} button - The button element
+ * @param {HTMLFormElement} form - The form to submit
  */
-function confirmRestore(button) {
+function confirmRestore(form) {
     if (confirm('♻️ Are you sure you want to restore this research title?')) {
-        if (button && button.form) {
-            button.form.submit();
+        if (form && form.method) {
+            form.submit();
+        } else {
+            console.error('❌ Form not found or invalid');
         }
     }
 }

@@ -1,8 +1,8 @@
 <x-app-layout title="Trash">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">🗑️ Trashed Research Titles</h1>
+        <h1 class="text-2xl font-bold text-gray-900"> Trashed Research Titles</h1>
         <a href="{{ route('research_titles.index') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
-            ← Back to Research Titles
+             Back to Research Titles
         </a>
     </div>
 
@@ -33,12 +33,12 @@
                 </div>
                 <div class="flex items-end gap-2">
                     <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
-                        🔍 Search
+                         Search
                     </button>
                 </div>
                 <div class="flex items-end">
                     <a href="{{ route('research_titles.trash') }}" class="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-center font-medium">
-                        ✕ Clear Filters
+                         Clear Filters
                     </a>
                 </div>
             </div>
@@ -106,31 +106,30 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 space-x-2">
-                            <!-- Restore Form -->
-                            <form method="POST" action="{{ route('research_titles.restore', $title->id) }}" class="inline">
+                            <!-- Restore Form (FIXED) -->
+                            <form method="POST" action="{{ route('research_titles.restore', $title->id) }}" style="display:inline;">
                                 @csrf
-                                @method('PATCH')
                                 <button 
                                     type="button" 
-                                    onclick="confirmRestore(this)" 
+                                    onclick="confirmRestore(this.form)" 
                                     class="text-green-600 hover:text-green-800 text-sm font-medium hover:underline"
                                 >
-                                    ♻️ Restore
+                                     Restore
                                 </button>
                             </form>
 
-                            <!-- Force Delete Form -->
-                            <form method="POST" action="{{ route('research_titles.forceDelete', $title->id) }}" class="inline">
-    @csrf
-    @method('DELETE') <!-- THIS is crucial -->
-    <button 
-        type="button" 
-        onclick="confirmForceDelete(this.form)" 
-        class="text-red-600 hover:text-red-800 text-sm font-medium hover:underline"
-    >
-        🔥 Delete Permanently
-    </button>
-</form>
+                            <!-- Force Delete Form (CORRECT) -->
+                            <form method="POST" action="{{ route('research_titles.forceDelete', $title->id) }}" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button 
+                                    type="button" 
+                                    onclick="confirmForceDelete(this.form)" 
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium hover:underline"
+                                >
+                                     Delete Permanently
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -149,12 +148,6 @@
         </table>
     </div>
 
-    <!-- Results Summary -->
-    @if ($researchTitles->total() > 0)
-        <div class="mt-4 text-sm text-gray-600">
-            <p>Showing <strong>{{ $researchTitles->count() }}</strong> of <strong>{{ $researchTitles->total() }}</strong> trashed titles</p>
-        </div>
-    @endif
 
     <!-- Pagination -->
     @if ($researchTitles->hasPages())
@@ -162,4 +155,6 @@
             {{ $researchTitles->links() }}
         </div>
     @endif
+
+    
 </x-app-layout>

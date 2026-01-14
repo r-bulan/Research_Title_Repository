@@ -22,10 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Trash
     Route::get('/trash', [ResearchTitleController::class, 'trash'])->name('research_titles.trash');
     Route::post('/trash/{id}/restore', [ResearchTitleController::class, 'restore'])->name('research_titles.restore');
-    Route::delete('/trash/{id}/force-delete', [ResearchTitleController::class, 'forceDelete'])
-    ->name('research_titles.forceDelete');
-
+    Route::delete('/trash/{id}/force-delete', [ResearchTitleController::class, 'forceDelete'])->name('research_titles.forceDelete');
 });
-
 
 require __DIR__.'/settings.php';

@@ -33,7 +33,7 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
-        return redirect()->route('categories.index')->with('success', '✓ Category created successfully!');
+        return redirect()->route('categories.index')->with('success', ' Category created successfully!');
     }
 
     public function edit(Category $category)

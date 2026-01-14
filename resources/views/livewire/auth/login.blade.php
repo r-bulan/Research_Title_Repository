@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ __('Login') }} - CCS Research Title Repository</title>
+    <title>{{ __('Login') }} - Research Title Repository</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 </head>
@@ -13,9 +13,8 @@
         <!-- Logo & Header -->
         <div class="text-center mb-8">
             <div class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg mb-4">
-                <h1 class="text-2xl font-bold">CCS Repository</h1>
+                <h1 class="text-2xl font-bold">Research TItle Repository</h1>
             </div>
-            <p class="text-gray-600 text-sm">College of Computer Studies</p>
         </div>
 
         <!-- Login Card -->
@@ -126,7 +125,7 @@
         <!-- Footer Info -->
         <div class="text-center mt-8">
             <p class="text-gray-500 text-xs">
-                {{ __('CCS Research Title Repository') }} © {{ date('Y') }}
+                {{ __(' Research Title Repository') }} © {{ date('Y') }}
             </p>
         </div>
     </div>
